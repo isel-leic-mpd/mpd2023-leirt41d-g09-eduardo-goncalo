@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface IShape {
+    getRef() : Point
+    getColor() : Color
+    intersects(IShape other) : boolean
+    contains(Point p) : boolean
+    contains(IShape other) : boolean
+    translate(int dx, int dy)
+    getBounds() : Rectangle
+}
+
+@enduml
