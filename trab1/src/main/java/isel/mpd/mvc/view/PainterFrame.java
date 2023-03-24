@@ -1,6 +1,7 @@
 package isel.mpd.mvc.view;
 
 import isel.mpd.mvc.app.App;
+import isel.mpd.mvc.model.commands.CommandFactory;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.configdrawers.*;
 
@@ -44,7 +45,8 @@ public class PainterFrame extends JFrame {
         }
 
         public void mouseReleased(MouseEvent me) {
-            app.addShape(configContext.getConfigurator().createShape());
+            if (configContext.getCommand() != null)
+                configContext.getCommand().execute();
             canvas.setPaintMode();
         }
     }
@@ -71,20 +73,36 @@ public class PainterFrame extends JFrame {
         var item = new JMenuItem(name);
         item.addActionListener(evt -> {
             configContext.setConfigurator(ConfigFactory.createConfigDrawer(name));
+            configContext.setCommand(CommandFactory.createCommand(name, app, configContext));
         });
         menu.add(item);
     }
 
     private void buildMenu() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu creationSel = new JMenu("Add Shape");
+        JMenu shapeMenu = new JMenu("Shape");
+        JMenu creationSel = new JMenu(App.CMD_ADD);
+//        JMenuItem move = new JMenuItem(App.CMD_MOVE);
+//        JMenuItem remove = new JMenuItem(App.CMD_REMOVE);
 
         addItem(App.SHAPE_CMD_RECT, creationSel);
         addItem(App.SHAPE_CMD_TRIANGLE, creationSel);
         addItem(App.SHAPE_CMD_OVAL, creationSel);
         addItem(App.SHAPE_CMD_LINE, creationSel);
         addItem(App.SHAPE_CMD_CIRCLE, creationSel);
-        addItem(App.SHAPE_CMD_GROUP, creationSel);
+
+        shapeMenu.add(creationSel);
+//        addItem(App.CMD_MOVE, shapeMenu);
+//        addItem(App.CMD_REMOVE, shapeMenu);
+        addItem(App.SHAPE_CMD_GROUP, shapeMenu);
+
+        JMenuItem undo = new JMenuItem(App.CMD_UNDO);
+        undo.addActionListener(evt -> {
+            if (configContext.getCommand() != null)
+                configContext.getCommand().undo();
+        });
+
+        shapeMenu.add(undo);
 
         JMenu configSel = new JMenu("Config");
         JMenuItem color = new JMenuItem("Color");
@@ -95,7 +113,7 @@ public class PainterFrame extends JFrame {
         });
         configSel.add(color);
 
-        menuBar.add(creationSel);
+        menuBar.add(shapeMenu);
         menuBar.add(configSel);
         setJMenuBar(menuBar);
     }

@@ -8,6 +8,9 @@ import isel.mpd.mvc.model.PictureChangedListener;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.PainterFrame;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class App {
     // Command names
     public static final String SHAPE_CMD_RECT = "Rect";
@@ -17,6 +20,9 @@ public class App {
     public static final String SHAPE_CMD_LINE= "Line";
     public static final String SHAPE_CMD_GROUP = "Group";
     public static final String CMD_UNDO = "Undo";
+    public static final String CMD_ADD = "Add";
+    public static final String CMD_MOVE = "Move";
+    public static final String CMD_REMOVE = "Remove";
 
 
     private Picture picture;
@@ -32,6 +38,10 @@ public class App {
             listener.newShape(s);
     }
 
+    private void fireRemoveShape(IShape s) {
+        if (listener != null)
+            listener.removeShape(s);
+    }
 
     public void setListener(PictureChangedListener listener) {
         this.listener = listener;
@@ -40,6 +50,11 @@ public class App {
     public void addShape(IShape s) {
         picture.add(s);
         fireAddShape(s);
+    }
+
+    public void removeShape(IShape s) {
+        picture.remove(s);
+        fireRemoveShape(s);
     }
 
     public Iterable<IShape> getShapes() {

@@ -17,10 +17,12 @@ public class Picture implements Iterable<IShape>, Serializable {
         shapes.add(shape);
     }
 
+    public void remove(IShape shape) {
+        shapes.remove(shape);
+    }
+
     @Override
     public Iterator<IShape> iterator() {
         return shapes.iterator();
     }
-
-
 }

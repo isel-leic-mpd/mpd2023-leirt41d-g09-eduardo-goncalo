@@ -1,6 +1,8 @@
 package isel.mpd.mvc.view.configdrawers;
 
 
+import isel.mpd.mvc.model.commands.Command;
+
 import java.awt.*;
 
 /**
@@ -10,16 +12,21 @@ import java.awt.*;
  */
 public final  class ConfigContext {
 
-    private  Point ref, curr,  mouseCurr;
+    private  Point ref, curr, mouseCurr;
     private  Color color = Color.BLACK;
     private ConfigDrawer configurator;
-
+    private Command command;
 
     // accessors
     public void setConfigurator(ConfigDrawer configurator) {
         this.configurator = configurator;
         configurator.setContext(this);
     }
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
     public ConfigDrawer getConfigurator() {
        return configurator;
     }
@@ -31,18 +38,18 @@ public final  class ConfigContext {
         return color;
     }
 
-
     public void start(Point ref) {
         this.ref = ref;
         this.curr = ref;
     }
-
 
     public void start(Point ref, Point curr, Point mouseCurr) {
         this.mouseCurr = mouseCurr;
         this.ref = new Point(ref.x, ref.y);
         this.curr =  new Point(curr.x, curr.y);
     }
+
+    public Command getCommand() { return command; }
 
     public int getWidth() {
         return curr.x - ref.x + 1;

@@ -7,12 +7,13 @@ import isel.mpd.mvc.view.configdrawers.ConfigDrawer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class PaintPanel extends JComponent implements PictureChangedListener
 {
 
-    private final LinkedList<ShapeView> shapes;
+    private final LinkedList<ShapeView> shapeViews;
     private ConfigDrawer configurator;
     private boolean configMode;
 
@@ -31,14 +32,12 @@ public class PaintPanel extends JComponent implements PictureChangedListener
         return dashed;
     }
 
-
     public PaintPanel(int w, int h, Color backColor) {
 
         setPreferredSize(new Dimension(w,h));
         setBackground(backColor);
-        shapes = new LinkedList<>();
+        shapeViews = new LinkedList<>();
     }
-
 
     public void setConfigMode(ConfigDrawer configurator) {
 
@@ -60,10 +59,9 @@ public class PaintPanel extends JComponent implements PictureChangedListener
         var w = getWidth();
         var h = getHeight();
 
-        g.fillRect(0,0, w, h);
+        g.fillRect(0, 0, w, h);
 
-
-        for(ShapeView sv : shapes) {
+        for(ShapeView sv : shapeViews) {
             sv.drawOn(g);
         }
         if (configurator != null) {
@@ -86,12 +84,21 @@ public class PaintPanel extends JComponent implements PictureChangedListener
 
     @Override
     public void newShape(IShape s) {
-        shapes.add(buildFrom(s));
+        shapeViews.add(buildFrom(s));
+        repaint();
+    }
+
+    public void removeShape(IShape s) {
+        ShapeView view = null;
+        for (ShapeView shapeView : getViews()) {
+            view = shapeView;
+            if (s.equals(view.getModel())) break;
+        }
+        shapeViews.remove(view);
         repaint();
     }
 
     public Iterable<ShapeView> getViews() {
-        return shapes;
+        return shapeViews;
     }
-
 }
