@@ -6,10 +6,9 @@ package isel.mpd.mvc.app;
 import isel.mpd.mvc.model.Picture;
 import isel.mpd.mvc.model.PictureChangedListener;
 import isel.mpd.mvc.model.shapes.IShape;
+import isel.mpd.mvc.view.DebugFrame;
+import isel.mpd.mvc.view.DebugPanel;
 import isel.mpd.mvc.view.PainterFrame;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class App {
     // Command names
@@ -24,8 +23,7 @@ public class App {
     public static final String CMD_MOVE = "Move";
     public static final String CMD_REMOVE = "Remove";
 
-
-    private Picture picture;
+    private final Picture picture;
 
     private PictureChangedListener listener;
 
@@ -50,11 +48,13 @@ public class App {
     public void addShape(IShape s) {
         picture.add(s);
         fireAddShape(s);
+        DebugFrame.menuAddItem(s);
     }
 
     public void removeShape(IShape s) {
         picture.remove(s);
         fireRemoveShape(s);
+        DebugFrame.menuRemoveItem(s);
     }
 
     public Iterable<IShape> getShapes() {
@@ -65,7 +65,10 @@ public class App {
         App app = new App();
 
         PainterFrame painter = new PainterFrame(app);
+        DebugFrame debug = new DebugFrame();
 
         painter.setVisible(true);
+        debug.setVisible(true);
+        debug.setLocation(painter.getX() + PainterFrame.CANVAS_SIZE_X, painter.getY());
     }
 }

@@ -23,5 +23,7 @@ public class addShapeCmd implements Command {
     @Override
     public void undo() {
         app.removeShape(shape);
+        for (IShape s : app.getShapes())
+            shape = s;
     }
 }
