@@ -38,18 +38,18 @@ public class PainterFrame extends JFrame {
         public void mousePressed(MouseEvent me) {
             canvas.setConfigMode(configContext.getConfigurator());
             configContext.start(me.getPoint());
+            canvas.repaint();
             if(configContext.getCommand() instanceof moveCmd)
                 ((moveCmd) configContext.getCommand()).shape_select();
             if(configContext.getCommand() instanceof removeCmd)
                 ((removeCmd) configContext.getCommand()).shape_select();
-            canvas.repaint();
         }
 
         public void mouseDragged(MouseEvent me) {
             configContext.setCurr(me.getPoint());
+            canvas.repaint();
             if(configContext.getCommand() instanceof moveCmd)
                 ((moveCmd) configContext.getCommand()).drag();
-            canvas.repaint();
         }
 
         public void mouseReleased(MouseEvent me) {

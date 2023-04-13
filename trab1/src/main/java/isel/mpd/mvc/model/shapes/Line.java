@@ -37,6 +37,7 @@ public class Line implements IShape {
     @Override
     public void translate(int dx, int dy) {
         start.translate(dx, dy);
+        curr.translate(dx,dy);
         bounds = null;
     }
 
