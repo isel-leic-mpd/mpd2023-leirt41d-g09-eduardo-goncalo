@@ -2,6 +2,8 @@ package isel.mpd.mvc.view;
 
 import isel.mpd.mvc.app.App;
 import isel.mpd.mvc.model.commands.CommandFactory;
+import isel.mpd.mvc.model.commands.moveCmd;
+import isel.mpd.mvc.model.commands.removeCmd;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.configdrawers.*;
 
@@ -36,17 +38,23 @@ public class PainterFrame extends JFrame {
         public void mousePressed(MouseEvent me) {
             canvas.setConfigMode(configContext.getConfigurator());
             configContext.start(me.getPoint());
+            if(configContext.getCommand() instanceof moveCmd)
+                ((moveCmd) configContext.getCommand()).shape_select();
+            if(configContext.getCommand() instanceof removeCmd)
+                ((removeCmd) configContext.getCommand()).shape_select();
             canvas.repaint();
         }
 
         public void mouseDragged(MouseEvent me) {
             configContext.setCurr(me.getPoint());
+            if(configContext.getCommand() instanceof moveCmd)
+                ((moveCmd) configContext.getCommand()).drag();
             canvas.repaint();
         }
 
         public void mouseReleased(MouseEvent me) {
             if (configContext.getCommand() != null)
-                configContext.getCommand().execute();
+                configContext.getCommand(). execute();
             canvas.setPaintMode();
         }
     }
@@ -72,7 +80,8 @@ public class PainterFrame extends JFrame {
     private void addItem(String name, JMenu menu) {
         var item = new JMenuItem(name);
         item.addActionListener(evt -> {
-            configContext.setConfigurator(ConfigFactory.createConfigDrawer(name));
+            if(!name.equals(app.CMD_MOVE) && !name.equals(app.CMD_REMOVE) ){
+                configContext.setConfigurator(ConfigFactory.createConfigDrawer(name));}
             configContext.setCommand(CommandFactory.createCommand(name, app, configContext));
         });
         menu.add(item);
@@ -82,8 +91,8 @@ public class PainterFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu shapeMenu = new JMenu("Shape");
         JMenu creationSel = new JMenu(App.CMD_ADD);
-//        JMenuItem move = new JMenuItem(App.CMD_MOVE);
-//        JMenuItem remove = new JMenuItem(App.CMD_REMOVE);
+        JMenuItem move = new JMenuItem(App.CMD_MOVE);
+        JMenuItem remove = new JMenuItem(App.CMD_REMOVE);
 
         addItem(App.SHAPE_CMD_RECT, creationSel);
         addItem(App.SHAPE_CMD_TRIANGLE, creationSel);
@@ -92,8 +101,8 @@ public class PainterFrame extends JFrame {
         addItem(App.SHAPE_CMD_CIRCLE, creationSel);
 
         shapeMenu.add(creationSel);
-//        addItem(App.CMD_MOVE, shapeMenu);
-//        addItem(App.CMD_REMOVE, shapeMenu);
+        addItem(App.CMD_MOVE, shapeMenu);
+        addItem(App.CMD_REMOVE, shapeMenu);
         addItem(App.SHAPE_CMD_GROUP, shapeMenu);
 
         JMenuItem undo = new JMenuItem(App.CMD_UNDO);
