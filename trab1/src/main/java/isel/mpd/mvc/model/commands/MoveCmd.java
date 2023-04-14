@@ -3,19 +3,23 @@ package isel.mpd.mvc.model.commands;
 import isel.mpd.mvc.app.App;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.configdrawers.ConfigContext;
+import isel.mpd.mvc.view.configdrawers.MoveConfig;
 
 import java.awt.*;
 
-public class moveCmd implements Command{
+public class MoveCmd implements Command{
 
     private final App app;
     private final ConfigContext ctx;
     private IShape shape;
 
-    private Point point;
+    private int transx;
+    private int transy;
 
+    private  Point oldpoint;
+    private Point newpoint;
 
-    public moveCmd(App app, ConfigContext ctx) {
+    public MoveCmd(App app, ConfigContext ctx) {
         this.app = app;
         this.ctx = ctx;
     }
@@ -24,23 +28,25 @@ public class moveCmd implements Command{
         for (IShape s : app.getShapes()) {
             if (s.contains(ctx.getCurr())) {
                 shape = s;
+                ctx.setConfigurator(new MoveConfig(shape));
             }
         }
     }
 
     public void drag(){
         if(shape != null){
-            int centerx = (shape.getRef().x + shape.getBounds().width/2);
-            int centery = (shape.getRef().y + shape.getBounds().height/2);
-            if(ctx.getCurr().x  -shape.getRef().x < 0) centerx = (shape.getRef().x - shape.getBounds().width/2);
-            if(ctx.getCurr().y  -shape.getRef().y < 0)centery = (shape.getRef().y - shape.getBounds().height/2);
-            int transx = ctx.getCurr().x - centerx;
-            int transy = ctx.getCurr().y - centery;
-            shape.translate(transx, transy);}
+            int centerx = shape.getRef().x;
+            int centery = shape.getRef().y;
+            transx = ctx.getCurr().x - centerx;
+            transy = ctx.getCurr().y - centery;
+            }
     }
     @Override
     public void execute() {
-        shape = null;
+        if(shape != null){
+            shape.translate(transx,transy);
+            shape = null;
+        }
     }
 
     @Override

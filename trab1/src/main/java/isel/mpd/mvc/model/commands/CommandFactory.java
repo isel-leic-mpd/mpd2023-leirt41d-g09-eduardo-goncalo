@@ -10,7 +10,7 @@ public class CommandFactory {
         if (name.equals(App.SHAPE_CMD_OVAL)) return new addShapeCmd(app, ctx);
         if (name.equals(App.SHAPE_CMD_LINE)) return new addShapeCmd(app, ctx);
         if (name.equals(App.SHAPE_CMD_CIRCLE)) return new addShapeCmd(app, ctx);
-        if (name.equals(App.CMD_MOVE)) return new moveCmd(app, ctx);
+        if (name.equals(App.CMD_MOVE)) return new MoveCmd(app, ctx);
         if (name.equals(App.CMD_REMOVE)) return new removeCmd(app, ctx);
 //        // other commands creations
         return null;

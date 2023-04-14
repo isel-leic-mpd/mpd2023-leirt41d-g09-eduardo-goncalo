@@ -33,6 +33,6 @@ public class removeCmd implements Command{
 
     @Override
     public void undo() {
-        //Not done
+        app.addShape(shape);
     }
 }

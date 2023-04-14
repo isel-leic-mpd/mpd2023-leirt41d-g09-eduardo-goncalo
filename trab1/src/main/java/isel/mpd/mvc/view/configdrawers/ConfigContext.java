@@ -43,11 +43,13 @@ public final  class ConfigContext {
         this.curr = ref;
     }
 
+
     public void start(Point ref, Point curr, Point mouseCurr) {
         this.mouseCurr = mouseCurr;
         this.ref = new Point(ref.x, ref.y);
         this.curr =  new Point(curr.x, curr.y);
     }
+
 
     public Command getCommand() { return command; }
 
