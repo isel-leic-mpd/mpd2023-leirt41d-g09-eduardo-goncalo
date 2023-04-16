@@ -7,7 +7,6 @@ import isel.mpd.mvc.model.Picture;
 import isel.mpd.mvc.model.PictureChangedListener;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.DebugFrame;
-import isel.mpd.mvc.view.DebugPanel;
 import isel.mpd.mvc.view.PainterFrame;
 
 public class App {

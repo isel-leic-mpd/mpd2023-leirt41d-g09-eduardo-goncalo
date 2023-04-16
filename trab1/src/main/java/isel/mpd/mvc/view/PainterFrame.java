@@ -3,7 +3,7 @@ package isel.mpd.mvc.view;
 import isel.mpd.mvc.app.App;
 import isel.mpd.mvc.model.commands.CommandFactory;
 import isel.mpd.mvc.model.commands.MoveCmd;
-import isel.mpd.mvc.model.commands.removeCmd;
+import isel.mpd.mvc.model.commands.RemoveCmd;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.configdrawers.*;
 
@@ -42,8 +42,8 @@ public class PainterFrame extends JFrame {
             configContext.start(me.getPoint());
             if(configContext.getCommand() instanceof MoveCmd)
                 ((MoveCmd) configContext.getCommand()).shape_select();
-            if(configContext.getCommand() instanceof removeCmd)
-                ((removeCmd) configContext.getCommand()).shape_select();
+            if(configContext.getCommand() instanceof RemoveCmd)
+                ((RemoveCmd) configContext.getCommand()).shape_select();
             canvas.repaint();
         }
 

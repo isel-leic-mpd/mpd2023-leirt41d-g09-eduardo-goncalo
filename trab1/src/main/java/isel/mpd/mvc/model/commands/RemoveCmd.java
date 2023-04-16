@@ -4,16 +4,14 @@ import isel.mpd.mvc.app.App;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.configdrawers.ConfigContext;
 
-import java.awt.*;
-
-public class removeCmd implements Command{
+public class RemoveCmd implements Command{
 
     private final App app;
     private final ConfigContext ctx;
     private IShape shape;
     private IShape oldshape;
 
-    public removeCmd(App app, ConfigContext ctx) {
+    public RemoveCmd(App app, ConfigContext ctx) {
         this.app = app;
         this.ctx = ctx;
     }
