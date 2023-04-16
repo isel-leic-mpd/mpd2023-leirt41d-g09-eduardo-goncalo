@@ -23,6 +23,7 @@ public class PainterFrame extends JFrame {
     private PaintPanel canvas;
     private int flag = 0;
 
+
     public  PainterFrame(App app){
         this.app = app;
         this.configContext = new ConfigContext();
@@ -47,19 +48,23 @@ public class PainterFrame extends JFrame {
         }
 
         public void mouseDragged(MouseEvent me) {
-            flag = 1;
             configContext.setCurr(me.getPoint());
-            if(configContext.getCommand() instanceof MoveCmd)
+            if(configContext.getCommand() instanceof MoveCmd) {
                 ((MoveCmd) configContext.getCommand()).drag();
+                flag = 1;
+            }
             canvas.repaint();
         }
 
         public void mouseReleased(MouseEvent me) {
             canvas.setPaintMode();
             canvas.setConfigMode(configContext.getConfigurator());
-            if (configContext.getCommand() != null && flag == 1){
-                configContext.getCommand().execute();
+            if(configContext.getCommand() instanceof MoveCmd && flag == 1) {
+                ((MoveCmd) configContext.getCommand()).execute();
                 flag = 0;
+            }
+            if (configContext.getCommand() != null && flag == 0){
+                configContext.getCommand().execute();
             }
             canvas.repaint();
         }

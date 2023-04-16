@@ -29,6 +29,7 @@ public class MoveCmd implements Command{
             if (s.contains(ctx.getCurr())) {
                 shape = s;
                 ctx.setConfigurator(new MoveConfig(shape));
+                newpoint = shape.getRef();
             }
         }
     }
@@ -44,6 +45,8 @@ public class MoveCmd implements Command{
     @Override
     public void execute() {
         if(shape != null){
+            oldpoint = newpoint;
+            newpoint = ctx.getCurr();
             shape.translate(transx,transy);
             shape = null;
         }
