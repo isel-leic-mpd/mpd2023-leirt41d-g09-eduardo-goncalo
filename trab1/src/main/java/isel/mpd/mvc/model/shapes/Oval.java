@@ -9,6 +9,13 @@ public class Oval implements IShape {
     private final Color color;
     private Rectangle bounds;
 
+    // Used by isel.mpd.mvc.utils.XmlSerializer.fromXml
+    public Oval() {
+        start = null;
+        w = 0;
+        h = 0;
+        color = null;
+    }
 
     public Oval(Point start, int w, int h, Color color) {
         this.start = start;

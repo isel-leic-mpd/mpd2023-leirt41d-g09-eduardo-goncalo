@@ -5,12 +5,19 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Rect implements IShape  {
-    private Point start;
-    private int w;
-    private int h;
-    private Color color;
+    private final Point start;
+    private final int w;
+    private final int h;
+    private final Color color;
     private Rectangle bounds;
 
+    // Used by isel.mpd.mvc.utils.XmlSerializer.fromXml
+    public Rect() {
+        start = null;
+        w = 0;
+        h = 0;
+        color = null;
+    }
 
     public Rect(Point start, int w, int h, Color color) {
         this.start = start;

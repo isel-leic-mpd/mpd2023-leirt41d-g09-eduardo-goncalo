@@ -5,12 +5,14 @@ import isel.mpd.mvc.model.commands.CommandFactory;
 import isel.mpd.mvc.model.commands.MoveCmd;
 import isel.mpd.mvc.model.commands.RemoveCmd;
 import isel.mpd.mvc.model.shapes.IShape;
+import isel.mpd.mvc.utils.XmlSerializer;
 import isel.mpd.mvc.view.configdrawers.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 
 public class PainterFrame extends JFrame {
     public static int CANVAS_SIZE_X = 1024;
@@ -100,10 +102,27 @@ public class PainterFrame extends JFrame {
 
     private void buildMenu() {
         JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        JMenu xmlMenu = new JMenu("XML");
+
+        JMenuItem xmlSave = new JMenuItem("Save");
+        xmlSave.addActionListener(evt -> {
+            try {
+                XmlSerializer.saveCanvas(app);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        JMenuItem xmlLoad = new JMenuItem("Load");
+        xmlLoad.addActionListener(evt -> XmlSerializer.loadCanvas(app));
+
+        xmlMenu.add(xmlSave);
+        xmlMenu.add(xmlLoad);
+        fileMenu.add(xmlMenu);
+
         JMenu shapeMenu = new JMenu("Shape");
         JMenu creationSel = new JMenu(App.CMD_ADD);
-        JMenuItem move = new JMenuItem(App.CMD_MOVE);
-        JMenuItem remove = new JMenuItem(App.CMD_REMOVE);
 
         addItem(App.SHAPE_CMD_RECT, creationSel);
         addItem(App.SHAPE_CMD_TRIANGLE, creationSel);
@@ -133,6 +152,7 @@ public class PainterFrame extends JFrame {
         });
         configSel.add(color);
 
+        menuBar.add(fileMenu);
         menuBar.add(shapeMenu);
         menuBar.add(configSel);
         setJMenuBar(menuBar);

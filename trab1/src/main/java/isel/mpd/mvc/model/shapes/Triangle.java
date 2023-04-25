@@ -9,6 +9,12 @@ public class Triangle implements IShape {
     private final Color color;
     private Rectangle bounds;
 
+    // Used by isel.mpd.mvc.utils.XmlSerializer.fromXml
+    public Triangle() {
+        start = null;
+        curr = null;
+        color = null;
+    }
 
     public Triangle(Point start, Point curr, Color color) {
         this.start = start;

@@ -8,6 +8,12 @@ public class Circle implements IShape {
     private final Color color;
     private Rectangle bounds;
 
+    // Used by isel.mpd.mvc.utils.XmlSerializer.fromXml
+    public Circle() {
+        start = null;
+        radius = 0;
+        color = null;
+    }
 
     public Circle(Point start, int radius, Color color) {
         this.start = start;

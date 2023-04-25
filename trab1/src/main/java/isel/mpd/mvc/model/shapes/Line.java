@@ -8,6 +8,12 @@ public class Line implements IShape {
     private final Color color;
     private Rectangle bounds;
 
+    // Used by isel.mpd.mvc.utils.XmlSerializer.fromXml
+    public Line() {
+        start = null;
+        curr = null;
+        color = null;
+    }
 
     public Line(Point start, Point curr, Color color) {
         this.start = start;
