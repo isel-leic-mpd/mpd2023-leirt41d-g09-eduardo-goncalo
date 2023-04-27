@@ -18,9 +18,10 @@ public final  class ConfigContext {
     private Command command;
 
     // accessors
-    public void setConfigurator(ConfigDrawer configurator) {
+    public ConfigDrawer setConfigurator(ConfigDrawer configurator) {
         this.configurator = configurator;
         configurator.setContext(this);
+        return configurator;
     }
 
     public void setCommand(Command command) {

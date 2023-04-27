@@ -1,9 +1,13 @@
 package isel.mpd.mvc.model.commands;
 
 import isel.mpd.mvc.app.App;
+import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.configdrawers.*;
 
+import java.util.Map;
+
 public class CommandFactory {
+
     public static Command createCommand(String name, App app, ConfigContext ctx) {
         if (name.equals(App.SHAPE_CMD_RECT)) return new AddShapeCmd(app, ctx);
         if (name.equals(App.SHAPE_CMD_TRIANGLE)) return new AddShapeCmd(app, ctx);

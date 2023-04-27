@@ -16,13 +16,6 @@ public class RemoveCmd implements Command{
         this.ctx = ctx;
     }
 
-    public void shape_select(){
-        for (IShape s : app.getShapes()) {
-            if (s.contains(ctx.getCurr())) {
-                shape = s;
-            }
-        }
-    }
 
 
     @Override

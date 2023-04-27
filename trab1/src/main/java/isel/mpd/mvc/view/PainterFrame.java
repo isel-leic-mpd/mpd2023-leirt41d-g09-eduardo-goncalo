@@ -1,6 +1,7 @@
 package isel.mpd.mvc.view;
 
 import isel.mpd.mvc.app.App;
+import isel.mpd.mvc.model.commands.AddShapeCmd;
 import isel.mpd.mvc.model.commands.CommandFactory;
 import isel.mpd.mvc.model.commands.MoveCmd;
 import isel.mpd.mvc.model.commands.RemoveCmd;
@@ -13,6 +14,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PainterFrame extends JFrame {
     public static int CANVAS_SIZE_X = 1024;
@@ -23,9 +26,6 @@ public class PainterFrame extends JFrame {
     // components
     private JTextArea mouseHistory;
     private PaintPanel canvas;
-    private int flag = 0;
-
-
     public  PainterFrame(App app){
         this.app = app;
         this.configContext = new ConfigContext();
@@ -40,20 +40,25 @@ public class PainterFrame extends JFrame {
 
     private  class PaintMouselistener extends  MouseAdapter {
         public void mousePressed(MouseEvent me) {
-            canvas.setConfigMode(configContext.getConfigurator());
+            IShape s = null;
             configContext.start(me.getPoint());
-            if(configContext.getCommand() instanceof MoveCmd)
-                ((MoveCmd) configContext.getCommand()).shape_select();
-            if(configContext.getCommand() instanceof RemoveCmd)
-                ((RemoveCmd) configContext.getCommand()).shape_select();
+            if(configContext.getCommand() instanceof AddShapeCmd){
+                canvas.setConfigMode(configContext.getConfigurator());// Mudar aqui
+            }
+            if(configContext.getCommand() instanceof MoveCmd){
+                s = ((MoveCmd) configContext.getCommand()).shape_select(me.getPoint());
+                canvas.setConfigMode(configContext.setConfigurator(new MoveConfig(s)));
+            }
+//            if(configContext.getCommand() instanceof RemoveCmd)
+//                ((RemoveCmd) configContext.getCommand()).shape_select();
             canvas.repaint();
         }
 
         public void mouseDragged(MouseEvent me) {
             configContext.setCurr(me.getPoint());
             if(configContext.getCommand() instanceof MoveCmd) {
+                canvas.setConfigMode(configContext.getConfigurator());
                 ((MoveCmd) configContext.getCommand()).drag();
-                flag = 1;
             }
             canvas.repaint();
         }
@@ -61,11 +66,10 @@ public class PainterFrame extends JFrame {
         public void mouseReleased(MouseEvent me) {
             canvas.setPaintMode();
             canvas.setConfigMode(configContext.getConfigurator());
-            if(configContext.getCommand() instanceof MoveCmd && flag == 1) {
-                ((MoveCmd) configContext.getCommand()).execute();
-                flag = 0;
+            if(configContext.getCommand() instanceof MoveCmd) {
+                configContext.getCommand().execute();
             }
-            if (configContext.getCommand() != null && flag == 0){
+            if (configContext.getCommand() != null){
                 configContext.getCommand().execute();
             }
             canvas.repaint();
@@ -93,9 +97,10 @@ public class PainterFrame extends JFrame {
     private void addItem(String name, JMenu menu) {
         var item = new JMenuItem(name);
         item.addActionListener(evt -> {
-            if(!name.equals(app.CMD_MOVE)&& !name.equals(app.CMD_REMOVE) ){
+            if(!name.equals(App.CMD_MOVE)&& !name.equals(App.CMD_REMOVE) ){
                 configContext.setConfigurator(ConfigFactory.createConfigDrawer(name));}
             configContext.setCommand(CommandFactory.createCommand(name, app, configContext));
+
         });
         menu.add(item);
     }

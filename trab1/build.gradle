@@ -25,6 +25,7 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'org.dom4j:dom4j:2.1.3'
 }
 
 tasks.named('test') {

@@ -11,7 +11,6 @@ public class MoveConfig implements ConfigDrawer{
     private IShape rect;
 
     public MoveConfig(IShape rect){
-
         this.rect = rect;
     }
 
