@@ -10,4 +10,6 @@ public interface IShape {
     boolean contains(IShape other);
     void translate(int dx, int dy);
     Rectangle getBounds();
+
+    String toSvg();
 }

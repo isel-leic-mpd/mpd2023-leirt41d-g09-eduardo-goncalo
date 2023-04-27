@@ -55,12 +55,23 @@ public class Circle implements IShape {
     }
 
     @Override
-    public Color getColor() {
-        return color;
-    }
+    public Color getColor() { return color; }
 
     @Override
     public Point getRef() { return copy(start); }
 
     public int getRadius() { return radius; }
+
+    @Override
+    public String toSvg() {
+        int r  = getRadius()/2;
+        int cx = getRef().x + r;
+        int cy = getRef().y + r;
+
+        return "\t<circle cx=\"" + cx + "\" cy=\"" + cy +
+                "\" r=\"" + r + "\" fill=\"rgb(" +
+                getColor().getRed() + ", " +
+                getColor().getGreen() + ", " +
+                getColor().getBlue() + ")\"/>\n";
+    }
 }

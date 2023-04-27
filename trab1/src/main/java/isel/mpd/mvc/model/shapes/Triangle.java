@@ -73,12 +73,31 @@ public class Triangle implements IShape {
     }
 
     @Override
-    public Color getColor() {
-        return color;
-    }
+    public Color getColor() { return color; }
 
     @Override
     public Point getRef() { return copy(start); }
 
     public Point getCurr() { return copy(curr); }
+
+    @Override
+    public String toSvg() {
+        Point curr = getCurr(), ref = getRef();
+        double aux = (curr.getX() - ref.getX()) / 2;
+
+        Point p = new Point();
+        p.x = (int) (ref.getX() + aux);
+        p.y = (int) (curr.getY() - aux);
+
+        String p1 = ref.x + "," + ref.y;
+        String p2 = p.x + "," + p.y;
+        String p3 = curr.x + "," + curr.y;
+
+        return "\t<polygon points=\"" +
+                p1 + " " + p2 + " " + p3 +
+                "\" fill=\"rgb(" +
+                getColor().getRed() + ", " +
+                getColor().getGreen() + ", " +
+                getColor().getBlue() + ")\"/>\n";
+    }
 }

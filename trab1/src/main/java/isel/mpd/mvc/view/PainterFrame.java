@@ -6,6 +6,7 @@ import isel.mpd.mvc.model.commands.CommandFactory;
 import isel.mpd.mvc.model.commands.MoveCmd;
 import isel.mpd.mvc.model.commands.RemoveCmd;
 import isel.mpd.mvc.model.shapes.IShape;
+import isel.mpd.mvc.utils.SvgSerializer;
 import isel.mpd.mvc.utils.XmlSerializer;
 import isel.mpd.mvc.view.configdrawers.*;
 
@@ -109,6 +110,7 @@ public class PainterFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenu xmlMenu = new JMenu("XML");
+        JMenu svgMenu = new JMenu("SVG");
 
         JMenuItem xmlSave = new JMenuItem("Save");
         xmlSave.addActionListener(evt -> {
@@ -125,6 +127,13 @@ public class PainterFrame extends JFrame {
         xmlMenu.add(xmlSave);
         xmlMenu.add(xmlLoad);
         fileMenu.add(xmlMenu);
+
+        JMenuItem svgExport = new JMenuItem("Export");
+        svgExport.addActionListener(evt ->
+                SvgSerializer.exportToSvg(app, CANVAS_SIZE_X, CANVAS_SIZE_Y));
+
+        svgMenu.add(svgExport);
+        fileMenu.add(svgMenu);
 
         JMenu shapeMenu = new JMenu("Shape");
         JMenu creationSel = new JMenu(App.CMD_ADD);

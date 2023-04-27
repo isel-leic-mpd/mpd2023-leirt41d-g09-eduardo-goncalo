@@ -60,9 +60,7 @@ public class Rect implements IShape  {
     }
 
     @Override
-    public Color getColor() {
-        return color;
-    }
+    public Color getColor() { return color; }
 
     @Override
     public Point getRef() { return copy(start); }
@@ -70,4 +68,14 @@ public class Rect implements IShape  {
     public int getWidth() { return w; }
 
     public int getHeight() { return h; }
+
+    @Override
+    public String toSvg() {
+        return "\t<rect x=\"" + getRef().x + "\" y=\"" + getRef().y +
+                "\" width=\"" + getWidth() + "\" height=\"" + getHeight() +
+                "\" fill=\"rgb(" +
+                getColor().getRed() + ", " +
+                getColor().getGreen() + ", " +
+                getColor().getBlue() + ")\"/>\n";
+    }
 }

@@ -58,9 +58,7 @@ public class Oval implements IShape {
     }
 
     @Override
-    public Color getColor() {
-        return color;
-    }
+    public Color getColor() { return color; }
 
     @Override
     public Point getRef() { return copy(start); }
@@ -68,4 +66,18 @@ public class Oval implements IShape {
     public int getWidth() { return w; }
 
     public int getHeight() { return h; }
+
+    @Override
+    public String toSvg() {
+        int rx = w / 2;
+        int ry = h / 2;
+        int cx = getRef().x + rx;
+        int cy = getRef().y + ry;
+
+        return "\t<ellipse cx=\"" + cx + "\" cy=\"" + cy +
+                "\" rx=\"" + rx + "\" ry=\"" + ry + "\" fill=\"rgb(" +
+                getColor().getRed() + ", " +
+                getColor().getGreen() + ", " +
+                getColor().getBlue() + ")\"/>\n";
+    }
 }

@@ -68,13 +68,20 @@ public class Line implements IShape {
     }
 
     @Override
-    public Color getColor() {
-        return color;
-    }
+    public Color getColor() { return color; }
 
     @Override
     public Point getRef() { return copy(start); }
 
     public Point getCurr() { return copy(curr); }
 
+    @Override
+    public String toSvg() {
+        return "\t<line x1=\"" + getRef().x + "\" y1=\"" + getRef().y +
+                "\" x2=\"" + getCurr().x + "\" y2=\"" + getCurr().y +
+                "\" stroke=\"rgb(" +
+                getColor().getRed() + ", " +
+                getColor().getGreen() + ", " +
+                getColor().getBlue() + ")\"/>\n";
+    }
 }
