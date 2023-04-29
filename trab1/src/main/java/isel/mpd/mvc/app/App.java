@@ -5,13 +5,17 @@ package isel.mpd.mvc.app;
 
 import isel.mpd.mvc.model.Picture;
 import isel.mpd.mvc.model.PictureChangedListener;
+import isel.mpd.mvc.model.commands.Command;
+import isel.mpd.mvc.model.commands.MoveCmd;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.DebugFrame;
 import isel.mpd.mvc.view.PainterFrame;
+import isel.mpd.mvc.view.configdrawers.ConfigContext;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class App {
     // Command names
@@ -29,6 +33,7 @@ public class App {
     private final Picture picture;
 
     private PictureChangedListener listener;
+    private Stack<Command> cmd = new Stack<>();
 
     private App() {
         picture = new Picture();
@@ -37,6 +42,10 @@ public class App {
     private void fireAddShape(IShape s) {
         if (listener != null)
             listener.newShape(s);
+    }
+
+    public Stack<Command> getcmd(){
+        return cmd;
     }
 
     private void fireRemoveShape(IShape s) {
@@ -64,7 +73,7 @@ public class App {
         return picture;
     }
 
-    public IShape shapeselect(Point p){
+    public IShape shape_pressed(Point p){
         IShape shape = null;
         for (IShape s : getShapes()){
             if (s.contains(p)) {
@@ -82,6 +91,7 @@ public class App {
         }
         return shapes;
     }
+
 
     public static void main(String[] args) {
         App app = new App();

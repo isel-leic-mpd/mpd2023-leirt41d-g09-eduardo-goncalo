@@ -18,8 +18,6 @@ public class MoveCmd implements Command{
     private int transy;
 
 
-
-
     public MoveCmd(App app, ConfigContext ctx) {
         this.app = app;
         this.ctx = ctx;
@@ -27,15 +25,15 @@ public class MoveCmd implements Command{
 
     public IShape shape_select(Point p){
 
-        shape = app.shapeselect(p);
+        shape = app.shape_pressed(p);
         if(shape != null){pt = p;}
         return shape;
     }
 
     public Rectangle drag(){
         if(shape != null){
-            transx = -ctx.getCurr().x + pt.x;
-            transy = -ctx.getCurr().y + pt.y;
+            transx = ctx.getCurr().x - pt.x;
+            transy = ctx.getCurr().y - pt.y;
             }
         return shape.getBounds();
     }

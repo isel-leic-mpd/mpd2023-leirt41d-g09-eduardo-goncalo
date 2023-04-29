@@ -9,24 +9,20 @@ public class RemoveCmd implements Command{
     private final App app;
     private final ConfigContext ctx;
     private IShape shape;
-    private IShape oldshape;
 
     public RemoveCmd(App app, ConfigContext ctx) {
         this.app = app;
         this.ctx = ctx;
     }
 
-
-
     @Override
     public void execute() {
+        shape = app.shape_pressed(ctx.getCurr());
         app.removeShape(shape);
-        oldshape = shape;
-        shape = null;
     }
 
     @Override
     public void undo() {
-        app.addShape(oldshape);
+        app.addShape(shape);
     }
 }

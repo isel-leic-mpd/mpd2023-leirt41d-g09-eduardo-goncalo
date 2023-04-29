@@ -3,6 +3,7 @@ package isel.mpd.mvc.view;
 import isel.mpd.mvc.app.App;
 import isel.mpd.mvc.model.commands.CommandFactory;
 import isel.mpd.mvc.model.commands.MoveCmd;
+import isel.mpd.mvc.model.commands.RemoveCmd;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.utils.SvgSerializer;
 import isel.mpd.mvc.utils.XmlSerializer;
@@ -44,8 +45,6 @@ public class PainterFrame extends JFrame {
                 canvas.setConfigMode(configContext.setConfigurator(new MoveConfig(s)));
             }
             else canvas.setConfigMode(configContext.getConfigurator());
-//            if(configContext.getCommand() instanceof RemoveCmd)
-//                ((RemoveCmd) configContext.getCommand()).shape_select();
             canvas.repaint();
         }
 
@@ -60,9 +59,12 @@ public class PainterFrame extends JFrame {
 
         public void mouseReleased(MouseEvent me) {
             canvas.setPaintMode();
-            if (configContext.getCommand() != null)
+            if (configContext.getCommand() != null){
                 configContext.getCommand().execute();
+                app.getcmd().add(configContext.getCommand());
+                }
             canvas.repaint();
+            configContext.setCommand(null);
         }
     }
 
@@ -140,8 +142,10 @@ public class PainterFrame extends JFrame {
         addItem(App.SHAPE_CMD_GROUP, shapeMenu);
         JMenuItem undo = new JMenuItem(App.CMD_UNDO);
         undo.addActionListener(evt -> {
-            if (configContext.getCommand() != null)
-                configContext.getCommand().undo();
+            if (app.getcmd().size() > 0)
+                app.getcmd().pop().undo();
+                //configContext.getCommand().undo();
+            canvas.repaint();
         });
 
         shapeMenu.add(undo);
