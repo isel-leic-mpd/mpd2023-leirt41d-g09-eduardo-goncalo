@@ -33,5 +33,6 @@ public class TriangleView implements ShapeView {
         g.fillPolygon(xPoints, yPoints, 3);
     }
 
+    @Override
     public IShape getModel() { return triangle; }
 }

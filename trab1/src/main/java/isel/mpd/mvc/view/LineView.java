@@ -25,5 +25,6 @@ public class LineView implements ShapeView {
         g.drawLine((int) ref.getX(), (int) ref.getY(), (int) curr.getX(), (int) curr.getY());
     }
 
+    @Override
     public IShape getModel() { return line; }
 }

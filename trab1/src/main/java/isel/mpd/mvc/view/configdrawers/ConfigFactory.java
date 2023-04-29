@@ -21,6 +21,7 @@ public class ConfigFactory {
         if (name.equals(App.SHAPE_CMD_OVAL)) return new OvalConfig();
         if (name.equals(App.SHAPE_CMD_LINE)) return new LineConfig();
         if (name.equals(App.SHAPE_CMD_CIRCLE)) return new CircleConfig();
+        if (name.equals(App.SHAPE_CMD_GROUP)) return new RectConfig();
         //if (name.equals(App.CMD_MOVE)) return new MoveConfig();
         // other drawers creations
         return null;

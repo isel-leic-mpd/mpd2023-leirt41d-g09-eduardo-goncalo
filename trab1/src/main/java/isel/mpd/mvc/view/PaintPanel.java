@@ -10,9 +10,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class PaintPanel extends JComponent implements PictureChangedListener
-{
-
+public class PaintPanel extends JComponent implements PictureChangedListener {
     private final LinkedList<ShapeView> shapeViews;
     private ConfigDrawer configurator;
     private boolean configMode;
@@ -33,14 +31,12 @@ public class PaintPanel extends JComponent implements PictureChangedListener
     }
 
     public PaintPanel(int w, int h, Color backColor) {
-
         setPreferredSize(new Dimension(w,h));
         setBackground(backColor);
         shapeViews = new LinkedList<>();
     }
 
     public void setConfigMode(ConfigDrawer configurator) {
-
         this.configurator = configurator;
         this.configMode = true;
     }
@@ -68,7 +64,6 @@ public class PaintPanel extends JComponent implements PictureChangedListener
             gc.setStroke(dashedStroke);
             configurator.draw(gc);
         }
-
     }
 
     public static ShapeView buildFrom(IShape s) {
@@ -78,7 +73,7 @@ public class PaintPanel extends JComponent implements PictureChangedListener
         if (c == Oval.class) return new OvalView(s);
         if (c == Line.class) return new LineView(s);
         if (c == Circle.class) return new CircleView(s);
-
+        if (c == Group.class) return new GroupView(s);
         return null;
     }
 

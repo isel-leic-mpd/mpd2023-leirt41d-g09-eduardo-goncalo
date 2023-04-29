@@ -48,9 +48,8 @@ public class Circle implements IShape {
 
     @Override
     public Rectangle getBounds() {
-        if (bounds == null) {
+        if (bounds == null)
             bounds =  new Rectangle(start.x, start.y, getRadius(), getRadius());
-        }
         return bounds;
     }
 

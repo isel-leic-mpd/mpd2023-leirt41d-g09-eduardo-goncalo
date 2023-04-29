@@ -8,12 +8,10 @@ import isel.mpd.mvc.model.PictureChangedListener;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.DebugFrame;
 import isel.mpd.mvc.view.PainterFrame;
-import isel.mpd.mvc.view.configdrawers.MoveConfig;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class App {
     // Command names
@@ -31,7 +29,6 @@ public class App {
     private final Picture picture;
 
     private PictureChangedListener listener;
-
 
     private App() {
         picture = new Picture();
@@ -66,6 +63,7 @@ public class App {
     public Iterable<IShape> getShapes() {
         return picture;
     }
+
     public IShape shapeselect(Point p){
         IShape shape = null;
         for (IShape s : getShapes()){
@@ -76,6 +74,14 @@ public class App {
         return shape;
     }
 
+    public List<IShape> shapeSelect(IShape select) {
+        List<IShape> shapes = new ArrayList<>();
+        for (IShape s : getShapes()) {
+            if (select.contains(s))
+                shapes.add(s);
+        }
+        return shapes;
+    }
 
     public static void main(String[] args) {
         App app = new App();

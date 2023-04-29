@@ -25,5 +25,6 @@ public class CircleView implements ShapeView {
         g.fillOval(p.x, p.y, circle.getRadius(), circle.getRadius());
     }
 
+    @Override
     public IShape getModel() { return circle; }
 }

@@ -25,5 +25,6 @@ public class OvalView implements ShapeView {
         g.fillOval(p.x, p.y, oval.getWidth(), oval.getHeight());
     }
 
+    @Override
     public IShape getModel() { return oval; }
 }

@@ -15,12 +15,10 @@ public class RectView implements ShapeView  {
     @Override
     public void drawOn(Graphics g) {
         Point p = rect.getRef();
-
         g.setColor(rect.getColor());
         g.fillRect(p.x, p.y, rect.getWidth(), rect.getHeight());
     }
 
+    @Override
     public IShape getModel() { return rect; }
-
-
 }

@@ -53,9 +53,8 @@ public class Rect implements IShape  {
 
     @Override
     public Rectangle getBounds() {
-        if (bounds == null) {
+        if (bounds == null)
             bounds =  new Rectangle(start.x, start.y, getWidth(), getHeight());
-        }
         return bounds;
     }
 
