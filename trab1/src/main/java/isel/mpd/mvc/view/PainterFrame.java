@@ -24,6 +24,8 @@ public class PainterFrame extends JFrame {
     // components
     private JTextArea mouseHistory;
     private PaintPanel canvas;
+    private IShape s;
+
     public  PainterFrame(App app){
         this.app = app;
         this.configContext = new ConfigContext();
@@ -38,21 +40,22 @@ public class PainterFrame extends JFrame {
 
     private  class PaintMouselistener extends  MouseAdapter {
         public void mousePressed(MouseEvent me) {
-            IShape s = null;
-            configContext.start(me.getPoint());
-            if(configContext.getCommand() instanceof MoveCmd){
-                s = ((MoveCmd) configContext.getCommand()).shape_select(me.getPoint());
-                canvas.setConfigMode(configContext.setConfigurator(new MoveConfig(s)));
+            if(configContext.getCommand() != null) {
+                configContext.start(me.getPoint());
+                if (configContext.getCommand() instanceof MoveCmd) {
+                    s = ((MoveCmd) configContext.getCommand()).shape_select(me.getPoint());
+                    if(s!=null) canvas.setConfigMode(configContext.setConfigurator(new MoveConfig(s,me.getPoint())));
+                } else if (configContext.getCommand() instanceof RemoveCmd) canvas.setPaintMode();
+                else canvas.setConfigMode(configContext.getConfigurator());
             }
-            else if (configContext.getCommand() instanceof RemoveCmd) canvas.setPaintMode();
-            else canvas.setConfigMode(configContext.getConfigurator());
             canvas.repaint();
         }
 
         public void mouseDragged(MouseEvent me) {
             configContext.setCurr(me.getPoint());
-            if(configContext.getCommand() instanceof MoveCmd) {
+            if(configContext.getCommand() instanceof MoveCmd && s != null) {
                 canvas.setConfigMode(configContext.getConfigurator());
+                canvas.setConfigMode(configContext.setConfigurator(new MoveConfig(s,me.getPoint())));
                 ((MoveCmd) configContext.getCommand()).drag();
             }
             canvas.repaint();
@@ -64,7 +67,9 @@ public class PainterFrame extends JFrame {
                 configContext.getCommand().execute();
                 app.getcmd().add(configContext.getCommand());
             }
-            if (configContext.getCommand() instanceof MoveCmd) configContext.setCommand(null);
+            if (configContext.getCommand() instanceof MoveCmd || configContext.getCommand() instanceof RemoveCmd)
+                configContext.setCommand(null);
+            s = null;
             canvas.repaint();
         }
     }
