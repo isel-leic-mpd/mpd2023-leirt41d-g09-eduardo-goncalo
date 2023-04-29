@@ -4,8 +4,7 @@ import isel.mpd.mvc.app.App;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.configdrawers.ConfigContext;
 
-public class RemoveCmd implements Command{
-
+public class RemoveCmd implements Command {
     private final App app;
     private final ConfigContext ctx;
     private IShape shape;
@@ -18,11 +17,11 @@ public class RemoveCmd implements Command{
     @Override
     public void execute() {
         shape = app.shape_pressed(ctx.getCurr());
-        app.removeShape(shape);
+        if (shape != null) app.removeShape(shape);
     }
 
     @Override
     public void undo() {
-        app.addShape(shape);
+        if (shape != null) app.addShape(shape);
     }
 }

@@ -56,6 +56,7 @@ public class Group implements IShape  {
 
     @Override
     public void translate(int dx, int dy) {
+        start.translate(dx, dy);
         for (var s : shapes) s.translate(dx, dy);
         bounds = null;
     }
