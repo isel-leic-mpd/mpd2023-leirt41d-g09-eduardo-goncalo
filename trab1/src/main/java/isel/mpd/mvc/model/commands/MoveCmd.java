@@ -4,7 +4,6 @@ import isel.mpd.mvc.app.App;
 import isel.mpd.mvc.model.shapes.IShape;
 import isel.mpd.mvc.view.DebugFrame;
 import isel.mpd.mvc.view.configdrawers.ConfigContext;
-import isel.mpd.mvc.view.configdrawers.MoveConfig;
 
 import java.awt.*;
 
@@ -38,6 +37,7 @@ public class MoveCmd implements Command{
             }
         return shape.getBounds();
     }
+
     @Override
     public void execute() {
         if(shape != null) {
@@ -49,7 +49,10 @@ public class MoveCmd implements Command{
 
     @Override
     public void undo() {
-    shape.translate(-transx,-transy);
+        if (shape != null) {
+            DebugFrame.menuRemoveItem(shape);
+            shape.translate(-transx,-transy);
+            DebugFrame.menuAddItem(shape);
+        }
     }
-
 }

@@ -45,7 +45,8 @@ public class PainterFrame extends JFrame {
                 if (configContext.getCommand() instanceof MoveCmd) {
                     s = ((MoveCmd) configContext.getCommand()).shape_select(me.getPoint());
                     if(s!=null) canvas.setConfigMode(configContext.setConfigurator(new MoveConfig(s,me.getPoint())));
-                } else if (configContext.getCommand() instanceof RemoveCmd) canvas.setPaintMode();
+                }
+                else if (configContext.getCommand() instanceof RemoveCmd) canvas.setPaintMode();
                 else canvas.setConfigMode(configContext.getConfigurator());
             }
             canvas.repaint();
