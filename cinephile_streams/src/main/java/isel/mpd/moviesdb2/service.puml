@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class MoviesDbService {
+	+MoviesDbService(api : MoviesDbWebApi)
+	+ searchByGenre(genreId : int, maxMovies : int) : Stream<Movie>
+	+ searchByName(genreId : int, maxMovies: int) : Stream<Movie>
+	+ getGenres() : Stream<Genre>
+	+ getMovieRecomendations(movieId : int, maxRecommendations : int ) : Stream<MovieDetail>
+	+ getMovieActors(movieId: int) : Stream<Actor>
+	+ getActorMovies(int actorId) : Stream<Movie>
+}
+
+@enduml
