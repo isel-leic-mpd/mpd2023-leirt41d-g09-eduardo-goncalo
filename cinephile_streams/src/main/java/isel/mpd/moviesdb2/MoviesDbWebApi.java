@@ -99,8 +99,10 @@ public class MoviesDbWebApi {
 	}
 
 	public List<MovieDto> searchByGenre(int page, int ... genres) {
-		// TO IMPLEMENT
-		return List.of();
+		String path = String.format(MOVIES_SEARCH_BY_GENRES,genres,page);
+		Reader reader = req.getReader(path);
+		SearchMoviesDto series = gson.fromJson(reader, SearchMoviesDto.class);
+		return series.getResults();
 	}
 
 	public List<MovieDto> searchByName(int page, String nameMatch) {
@@ -122,8 +124,12 @@ public class MoviesDbWebApi {
 	}
 
 	public List<MovieDto> actorMovies(int actorId) {
-		// TO IMPLEMENT
-		return List.of();
+		String path = String.format(ACTOR_MOVIES,actorId);
+		Reader reader = req.getReader(path);
+
+		GetActorMoviesDto credits =
+				gson.fromJson(reader, GetActorMoviesDto.class);
+		return credits.getCast();
 	}
 
 	public MoviesDbWebApi(Request req) {

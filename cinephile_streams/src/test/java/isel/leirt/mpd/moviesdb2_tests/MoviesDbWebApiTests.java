@@ -56,7 +56,7 @@ public class MoviesDbWebApiTests  {
 			api.actorMovies(rachelWoodId);
 		for(var m : movies)
 			System.out.println(m);
-		assertEquals(49, movies.size());
+		assertEquals(50, movies.size());
 	}
 
 	@Test
