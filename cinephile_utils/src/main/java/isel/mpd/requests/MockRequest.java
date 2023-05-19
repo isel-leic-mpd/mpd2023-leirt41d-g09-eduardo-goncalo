@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class MockRequest implements Request{
 	private final static String CACHE_NAME= "queries_cache/";
-	private  static String CACHE_PATH;
+	private final static String CACHE_PATH;
 
 	static {
 		URL url = MockRequest.class.getClassLoader().getResource(CACHE_NAME);
@@ -20,7 +20,6 @@ public class MockRequest implements Request{
 	}
 
 	private static String convert(String path) {
-
 		var start = path.indexOf('3')+1;
 		var end = path.lastIndexOf('&');
 		if (end == -1) end = path.lastIndexOf('?');
@@ -34,7 +33,6 @@ public class MockRequest implements Request{
 
 	@Override
 	public Reader getReader(String path) {
-
 		path = CACHE_NAME + convert(path);
 		try {
 			return new InputStreamReader(ClassLoader.getSystemResource(path).openStream());

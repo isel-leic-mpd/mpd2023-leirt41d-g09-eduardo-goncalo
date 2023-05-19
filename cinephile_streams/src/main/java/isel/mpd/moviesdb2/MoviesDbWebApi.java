@@ -2,6 +2,7 @@ package isel.mpd.moviesdb2;
 
 import com.google.gson.Gson;
 import isel.mpd.moviesdb2.dto.*;
+import isel.mpd.requests.MockRequest;
 import isel.mpd.requests.Request;
 
 import java.io.*;
@@ -9,6 +10,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import static isel.mpd.requests.MockRequest.saveOn;
 
 public class MoviesDbWebApi {
 	public final static int API_PAGE_SIZE=20;
@@ -62,7 +64,7 @@ public class MoviesDbWebApi {
 
 		} catch(IOException e) {
 			throw new IllegalStateException(
-				"YOU MUST GET a KEY from  openweatherapi.com and place it in src/main/resources/openweatherapi-app-key.txt");
+				"YOU MUST GET a KEY from  themoviedb.org and place it in src/main/resources/movies_db_api_key.txt");
 		}
 	}
 
@@ -71,6 +73,8 @@ public class MoviesDbWebApi {
 		Reader reader = req.getReader(path);
 		GenreListQuery genresQuery =
 			gson.fromJson(reader, GenreListQuery.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return genresQuery.getGenres();
 	}
 
@@ -79,6 +83,8 @@ public class MoviesDbWebApi {
 		Reader reader = req.getReader(path);
 		MoviesQueryDto movies =
 			gson.fromJson(reader, MoviesQueryDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return movies.getResults();
 	}
 
@@ -87,6 +93,8 @@ public class MoviesDbWebApi {
 		Reader reader = req.getReader(path);
 		MovieDetailDto movieDetail =
 			gson.fromJson(reader, MovieDetailDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return movieDetail;
 	}
 
@@ -95,13 +103,17 @@ public class MoviesDbWebApi {
 		Reader reader = req.getReader(path);
 		MoviesQueryDto recommendations =
 			gson.fromJson(reader, MoviesQueryDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return recommendations.getResults();
 	}
 
 	public List<MovieDto> searchByGenre(int page, int ... genres) {
-		String path = String.format(MOVIES_SEARCH_BY_GENRES,genres,page);
+		String path = String.format(MOVIES_SEARCH_BY_GENRES, Arrays.toString(genres), page);
 		Reader reader = req.getReader(path);
 		SearchMoviesDto series = gson.fromJson(reader, SearchMoviesDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return series.getResults();
 	}
 
@@ -110,6 +122,8 @@ public class MoviesDbWebApi {
 		Reader reader = req.getReader(path);
 		SearchMoviesDto series =
 			gson.fromJson(reader, SearchMoviesDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return series.getResults();
 	}
 
@@ -119,8 +133,9 @@ public class MoviesDbWebApi {
 
 		GetActorsDto credits =
 			gson.fromJson(reader, GetActorsDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return credits.getCast();
-
 	}
 
 	public List<MovieDto> actorMovies(int actorId) {
@@ -129,6 +144,8 @@ public class MoviesDbWebApi {
 
 		GetActorMoviesDto credits =
 				gson.fromJson(reader, GetActorMoviesDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
 		return credits.getCast();
 	}
 

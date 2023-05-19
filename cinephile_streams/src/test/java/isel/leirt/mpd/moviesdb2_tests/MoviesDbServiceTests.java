@@ -117,7 +117,7 @@ public class MoviesDbServiceTests {
 
 		moviesList.forEach(System.out::println);
 		assertEquals(1, req.getCount());
-		assertEquals(49, moviesList.size());
+		assertEquals(50, moviesList.size());
 	}
 
 
