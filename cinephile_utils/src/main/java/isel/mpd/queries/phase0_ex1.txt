@@ -1,0 +1,21 @@
+
+1. Comparator<WeatherInfo> cmp = w -> w.temp();
+   Esta implementação da interface funcional 'Comparator' está incorreta.
+
+   Correção:
+   Comparator<WeatherInfo> cmp = (w1, w2) -> Double.compare(w1.temp(), w2.temp());
+
+2. Supplier<Integer> sup = () -> "ISEL".length();
+   Esta implementação da interface funcional 'Supplier' está correta.
+
+3. Consumer<WeatherInfo> con = System.out::println;
+   Esta implementação da interface funcional 'Consumer' está correta.
+
+4. Predicate<WeatherInfo> p = () -> WeatherInfo::humidity > 75;
+   Esta implementação da interface funcional 'Predicate' está incorreta.
+
+   Correção:
+   Predicate<WeatherInfo> p = w -> w.humidity() > 75;
+
+5. Function<WeatherInfo, Double> f = WeatherInfo::feelsLike;
+   Esta implementação da interface funcional 'Function' está correta.

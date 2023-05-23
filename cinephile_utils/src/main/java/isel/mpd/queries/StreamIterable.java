@@ -1,12 +1,8 @@
 package isel.mpd.queries;
 
 import isel.mpd.queries.iterators.*;
-import isel.mpd.queries.iterators.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -14,6 +10,10 @@ public interface StreamIterable<T> extends Iterable<T>  {
     //Iterator<T> iterator();
 
     // operações factory
+    static <T> StreamIterable<T> of(T... params) {
+        return from(List.of(params));
+    }
+
     static <T> StreamIterable<T> from(Iterable<T> src) {
         return () -> src.iterator();
     }
@@ -41,6 +41,14 @@ public interface StreamIterable<T> extends Iterable<T>  {
     }
 
     // operações intermédias
+    default StreamIterable<T> skip(int n) {
+        return filter(p -> toList().indexOf(p) > n - 1);
+    }
+
+    default StreamIterable<T> takeWhile(Predicate<T> pred) {
+        return filter(pred);
+    }
+
     default  StreamIterable<T> filter(Predicate<T> pred) {
         return () -> new FilterIterator<T>(this, pred);
     }
@@ -53,13 +61,24 @@ public interface StreamIterable<T> extends Iterable<T>  {
         return () -> new FlatMapIterator<>(this,mapper);
     }
 
-
     default StreamIterable<T> limit(int lim) {
         return () -> new LimitIterator<>(this,lim);
     }
 
-
     // operações terminais
+    default Optional<T> max(Comparator<T> cmp) {
+        if (toList().isEmpty()) return Optional.empty();
+        T max = toList().get(0);
+        for (var t : this)
+            if (cmp.compare(max, t) < 0) max = t;
+        return Optional.of(max);
+    }
+
+    default Optional<T> first(Comparator<T> cmp) {
+        if (toList().isEmpty()) return Optional.empty();
+        T first = toList().get(0);
+        return Optional.of(first);
+    }
 
     default List<T> toList() {
         List<T> res =  new ArrayList<>();
@@ -72,5 +91,4 @@ public interface StreamIterable<T> extends Iterable<T>  {
         for(T e : this) c++;
         return c;
     }
-
 }

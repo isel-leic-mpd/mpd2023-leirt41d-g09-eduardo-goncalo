@@ -24,7 +24,7 @@ public class MoviesDbService {
 		return null;
 	}
 
-	public Stream<Movie> searchByName(int genreId, int maxMovies) {
+	public Stream<Movie> searchByName(String match, int maxMovies) {
 		// TO IMPLEMENT
 		return null;
 	}
