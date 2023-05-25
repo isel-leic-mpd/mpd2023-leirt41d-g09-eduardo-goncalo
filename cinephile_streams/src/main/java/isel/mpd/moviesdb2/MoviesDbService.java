@@ -10,8 +10,11 @@ import isel.mpd.moviesdb2.model.Movie;
 import isel.mpd.moviesdb2.model.MovieDetail;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static isel.mpd.queries.StreamIterable.range;
 
 public class MoviesDbService {
 
@@ -20,41 +23,50 @@ public class MoviesDbService {
 
 
 	public Stream<Movie> searchByGenre(int genreId, int maxMovies) {
-		// TO IMPLEMENT
-		return null;
+		return IntStream.rangeClosed(1,maxMovies/API_PAGE_SIZE)
+				.mapToObj(p -> api.searchByGenre(p,genreId))
+				.takeWhile(l -> l.size() > 0)
+				.flatMap(List::stream)
+				.map(this::dtoToMovie);
 	}
 
 	public Stream<Movie> searchByName(String match, int maxMovies) {
-		// TO IMPLEMENT
-		return null;
+		return IntStream.rangeClosed(1,maxMovies/API_PAGE_SIZE)
+				.mapToObj(p->api.searchByName(p,match))
+				.takeWhile(l -> l.size() > 0)
+				.flatMap(l -> l.stream())
+				.map(this::dtoToMovie);
 	}
 
 	public Stream<Genre> getGenres() {
-		// TO IMPLEMENT
-		return null;
-
+		return Stream.of(1)
+				.flatMap(__ -> api.getGenres().stream())
+				.map(this::dtoToGenre);
 	}
 
 	private Stream<Genre> getGenres(int[] ids) {
-		// TO IMPLEMENT
-		return null;
+//		return getGenres()
+//				.filter(g -> Arrays.stream(ids).anyMatch(i -> i == g.getId()));
+		return Stream.of();
 	}
 
 	public Stream<MovieDetail> getMovieRecommendations(int movieId) {
-		// TO IMPLEMENT
-		return null;
-
+		return Stream.of(1)
+				.flatMap(__ -> api.getMovieRecommendations(movieId).stream())
+				.map(this::dtoToMovie)
+				.flatMap(Movie::getRecommendations);
 	}
 
 	public Stream<Actor> getMovieActors(int movieId) {
-		// TO IMPLEMENT
-		return null;
+		return Stream.of(1)
+				.flatMap(__ -> api.movieActors(movieId).stream())
+				.map(this::dtoToActor);
 	}
 
 	public Stream<Movie> getActorMovies(int actorId) {
-		// TO IMPLEMENT
-		return null;
-
+		return Stream.of(1)
+				.flatMap(__ -> api.actorMovies(actorId).stream())
+				.map(this::dtoToMovie);
 	}
 
 	public MovieDetail getMovieDetail(int movieId) {
@@ -63,44 +75,44 @@ public class MoviesDbService {
 
 	private Movie dtoToMovie(MovieDto dto) {
 		return new Movie(
-			dto.getReleaseDate(),
-			dto.getTitle(),
-			dto.getId(),
-			dto.getPopularity(),
-			getMovieActors(dto.getId()),
-			getGenres(dto.getGenreIds()),
-			getMovieRecommendations(dto.getId()));
+				dto.getReleaseDate(),
+				dto.getTitle(),
+				dto.getId(),
+				dto.getPopularity(),
+				getMovieActors(dto.getId()),
+				getGenres(dto.getGenreIds()),
+				getMovieRecommendations(dto.getId()));
 	}
 
 	private MovieDetail dtoToMovieDetail(MovieDetailDto dto) {
 		return new MovieDetail(
-			dto.getReleaseDate(),
-			dto.getTitle(),
-			dto.getId(),
-			dto.getPopularity(),
-			getMovieActors(dto.getId()),
-			getGenres(dto.getGenreIds()),
-			getMovieRecommendations(dto.getId()),
-			dto.getRuntime(),
-			dto.getBudget(),
-			dto.getRevenue(),
-			dto.getCompanies());
+				dto.getReleaseDate(),
+				dto.getTitle(),
+				dto.getId(),
+				dto.getPopularity(),
+				getMovieActors(dto.getId()),
+				getGenres(dto.getGenreIds()),
+				getMovieRecommendations(dto.getId()),
+				dto.getRuntime(),
+				dto.getBudget(),
+				dto.getRevenue(),
+				dto.getCompanies());
 	}
 
 	private Genre dtoToGenre(GenreDto dto) {
-	    return new Genre(dto.getId(),
-		                 dto.getName(),
-						 // tente alterar este código para
-						 // poder especificar o máximo de filmes na
-						 // chamada ao método getMovies de Genre
-		                 searchByGenre(dto.getId(), 20));
+		return new Genre(dto.getId(),
+				dto.getName(),
+				// tente alterar este código para
+				// poder especificar o máximo de filmes na
+				// chamada ao método getMovies de Genre
+				searchByGenre(dto.getId(), 20));
 	}
 
 	private Actor dtoToActor(ActorDto dto) {
 		return new Actor(dto.getId(),
-						dto.getName(),
-						dto.getPopularity(),
-						getActorMovies(dto.getId()));
+				dto.getName(),
+				dto.getPopularity(),
+				getActorMovies(dto.getId()));
 	}
 
 	public MoviesDbService(MoviesDbWebApi api) {

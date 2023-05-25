@@ -31,6 +31,18 @@ public class MoviesDbServiceTests {
 		assertEquals(16, genres.size());
 		assertEquals(1, req.getCount());
 	}
+	@Test
+	public void getGenresTest2() {
+		HttpRequest req =  new HttpRequest();
+		MoviesDbService serv =
+				new MoviesDbService(new MoviesDbWebApi(req));
+
+		Stream<Genre> sgenres = serv.getGenres();
+
+		List<Genre> genres = sgenres.collect(toList());
+		genres.forEach(System.out::println);
+		assertEquals(19, genres.size());
+	}
 
 	@Test
 	public void getActionAndAdventureMoviesTest() {
