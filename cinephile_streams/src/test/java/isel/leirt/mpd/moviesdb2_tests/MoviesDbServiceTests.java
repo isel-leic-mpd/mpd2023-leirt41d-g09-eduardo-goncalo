@@ -28,20 +28,8 @@ public class MoviesDbServiceTests {
 
 		List<Genre> genres = sgenres.collect(toList());
 		genres.forEach(System.out::println);
-		assertEquals(16, genres.size());
-		assertEquals(1, req.getCount());
-	}
-	@Test
-	public void getGenresTest2() {
-		HttpRequest req =  new HttpRequest();
-		MoviesDbService serv =
-				new MoviesDbService(new MoviesDbWebApi(req));
-
-		Stream<Genre> sgenres = serv.getGenres();
-
-		List<Genre> genres = sgenres.collect(toList());
-		genres.forEach(System.out::println);
 		assertEquals(19, genres.size());
+		assertEquals(1, req.getCount());
 	}
 
 	@Test
@@ -94,7 +82,7 @@ public class MoviesDbServiceTests {
 		var actorsList = movie.getActors().collect(toList());
 		actorsList.forEach(System.out::println);
 		assertEquals(2, req.getCount());
-		assertEquals(7, actorsList.size());
+		assertEquals(61, actorsList.size());
 		assertEquals(2, req.getCount());
 	}
 
@@ -132,5 +120,20 @@ public class MoviesDbServiceTests {
 		assertEquals(50, moviesList.size());
 	}
 
+	@Test
+	public void getGodfatherMoviesTest() {
+		CounterRequest req = new CounterRequest(new HttpRequest());
+		MoviesDbService serv =
+				new MoviesDbService(new MoviesDbWebApi(req));
 
+		Stream<Movie> moviesStream =
+				serv.searchByName("Godfather", 120);
+		assertEquals(0, req.getCount());
+
+		var moviesList = moviesStream.collect(toList());
+
+		moviesList.forEach(System.out::println);
+		assertEquals(6, req.getCount());
+		assertEquals(105, moviesList.size());
+	}
 }

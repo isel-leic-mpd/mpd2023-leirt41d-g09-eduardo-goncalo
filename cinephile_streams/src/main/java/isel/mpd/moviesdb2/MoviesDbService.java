@@ -10,6 +10,7 @@ import isel.mpd.moviesdb2.model.Movie;
 import isel.mpd.moviesdb2.model.MovieDetail;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -23,18 +24,18 @@ public class MoviesDbService {
 
 
 	public Stream<Movie> searchByGenre(int genreId, int maxMovies) {
-		return IntStream.rangeClosed(1,maxMovies/API_PAGE_SIZE)
-				.mapToObj(p -> api.searchByGenre(p,genreId))
+		return IntStream.rangeClosed(1, maxMovies/API_PAGE_SIZE)
+				.mapToObj(p -> api.searchByGenre(p, genreId))
 				.takeWhile(l -> l.size() > 0)
 				.flatMap(List::stream)
 				.map(this::dtoToMovie);
 	}
 
 	public Stream<Movie> searchByName(String match, int maxMovies) {
-		return IntStream.rangeClosed(1,maxMovies/API_PAGE_SIZE)
-				.mapToObj(p->api.searchByName(p,match))
+		return IntStream.rangeClosed(1, maxMovies/API_PAGE_SIZE)
+				.mapToObj(p -> api.searchByName(p, match))
 				.takeWhile(l -> l.size() > 0)
-				.flatMap(l -> l.stream())
+				.flatMap(List::stream)
 				.map(this::dtoToMovie);
 	}
 

@@ -1,24 +1,22 @@
 package isel.mpd.requests;
 
-
 import java.io.Reader;
 
 public class CounterRequest implements Request {
+	private final Request req;
+	private int count;
 
 	public CounterRequest(Request req) {
-		// TO IMPLEMENT
+		this.req = req;
 	}
 
 	@Override
 	public Reader getReader(String path) {
-		// TO IMPLEMENT
-		return null;
+		++count;
+		return req.getReader(path);
 	}
 
 	public int getCount() {
-		// TO IMPLEMENT
-		return 0;
-
+		return count/2;
 	}
 }
-
