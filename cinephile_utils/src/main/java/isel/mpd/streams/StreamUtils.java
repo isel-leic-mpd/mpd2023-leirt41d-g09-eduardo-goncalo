@@ -8,8 +8,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class StreamUtils {
-
-	public static <T> Stream<T> sortedIntersection(Comparator cmp, Stream<T> s1, Stream<T> s2) {
-		return StreamSupport.stream(new SortedIntersection<T>(cmp,s1,s2),false);
+	public static <T> Stream<T> sortedIntersection(Comparator<T> cmp, Stream<T> s1, Stream<T> s2) {
+		return StreamSupport.stream(new SortedIntersection<>(cmp, s1, s2), false);
 	}
 }
