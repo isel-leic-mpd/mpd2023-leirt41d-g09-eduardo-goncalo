@@ -8,12 +8,16 @@ import isel.mpd.moviesdb2.model.Actor;
 import isel.mpd.moviesdb2.model.Genre;
 import isel.mpd.moviesdb2.model.Movie;
 import isel.mpd.moviesdb2.model.MovieDetail;
+import isel.mpd.streams.StreamUtils;
+import isel.mpd.streams.spliterators.SortedIntersection;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static isel.mpd.queries.StreamIterable.range;
 
@@ -51,11 +55,21 @@ public class MoviesDbService {
 		return Stream.of();
 	}
 
+
 	public Stream<MovieDetail> getMovieRecommendations(int movieId) {
 		return Stream.of(1)
 				.flatMap(__ -> api.getMovieRecommendations(movieId).stream())
 				.map(this::dtoToMovie)
 				.flatMap(Movie::getRecommendations);
+	}
+
+	private Stream<Movie> getCommonRecommendation (int movieId1, int movieId2){
+		return StreamUtils.sortedIntersection((n,m) -> n.getId() - m.getId(),
+						Stream.of(1).
+								flatMap(__ -> api.getMovieRecommendations(movieId1).stream()),
+						Stream.of(1).
+								flatMap(__ -> api.getMovieRecommendations(movieId2).stream()))
+				.map(this::dtoToMovie);
 	}
 
 	public Stream<Actor> getMovieActors(int movieId) {

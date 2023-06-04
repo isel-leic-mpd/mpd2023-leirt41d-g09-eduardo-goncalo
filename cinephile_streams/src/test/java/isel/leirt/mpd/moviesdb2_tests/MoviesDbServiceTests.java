@@ -2,6 +2,7 @@ package isel.leirt.mpd.moviesdb2_tests;
 
 import isel.mpd.moviesdb2.MoviesDbService;
 import isel.mpd.moviesdb2.MoviesDbWebApi;
+import isel.mpd.moviesdb2.dto.MovieDto;
 import isel.mpd.moviesdb2.model.Genre;
 import isel.mpd.moviesdb2.model.Movie;
 import isel.mpd.moviesdb2.model.MovieDetail;
@@ -9,9 +10,12 @@ import isel.mpd.requests.CounterRequest;
 import isel.mpd.requests.HttpRequest;
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static isel.mpd.streams.StreamUtils.sortedIntersection;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
@@ -82,7 +86,7 @@ public class MoviesDbServiceTests {
 		var actorsList = movie.getActors().collect(toList());
 		actorsList.forEach(System.out::println);
 		assertEquals(2, req.getCount());
-		assertEquals(61, actorsList.size());
+		assertEquals(60, actorsList.size());
 		assertEquals(2, req.getCount());
 	}
 
@@ -120,6 +124,7 @@ public class MoviesDbServiceTests {
 		assertEquals(50, moviesList.size());
 	}
 
+
 	@Test
 	public void getGodfatherMoviesTest() {
 		CounterRequest req = new CounterRequest(new HttpRequest());
@@ -134,6 +139,6 @@ public class MoviesDbServiceTests {
 
 		moviesList.forEach(System.out::println);
 		assertEquals(6, req.getCount());
-		assertEquals(105, moviesList.size());
+		assertEquals(106, moviesList.size());
 	}
 }

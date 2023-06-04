@@ -21,5 +21,6 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     implementation project(':cinephile_utils')
     implementation 'com.google.code.gson:gson:2.8.6'
+    testImplementation 'junit:junit:4.13.1'
 
 }
