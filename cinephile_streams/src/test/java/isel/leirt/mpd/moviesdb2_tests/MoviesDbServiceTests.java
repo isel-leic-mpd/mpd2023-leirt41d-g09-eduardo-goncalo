@@ -141,4 +141,25 @@ public class MoviesDbServiceTests {
 		assertEquals(6, req.getCount());
 		assertEquals(106, moviesList.size());
 	}
+
+	@Test
+	public void getCommonRecomendationsTest() {
+		CounterRequest req = new CounterRequest(new HttpRequest());
+		MoviesDbService serv =
+				new MoviesDbService(new MoviesDbWebApi(req));
+
+		int TERMINATOR_ID= 218;
+		int TERMINATOR2_ID = 280;
+
+		Stream<Movie> moviesStream =
+				serv.getCommonRecommendation(TERMINATOR_ID,TERMINATOR2_ID);
+
+		assertEquals(0, req.getCount());
+
+		var moviesList = moviesStream.collect(toList());
+
+		moviesList.forEach(System.out::println);
+		assertEquals(2, req.getCount());
+		assertEquals(10, moviesList.size());
+	}
 }

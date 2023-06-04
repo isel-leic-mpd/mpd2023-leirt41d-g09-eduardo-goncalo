@@ -63,12 +63,13 @@ public class MoviesDbService {
 				.flatMap(Movie::getRecommendations);
 	}
 
-	private Stream<Movie> getCommonRecommendation (int movieId1, int movieId2){
-		return StreamUtils.sortedIntersection((n,m) -> n.getId() - m.getId(),
+	public Stream<Movie> getCommonRecommendation (int movieId1, int movieId2){
+		Comparator<MovieDto> cmp = (n,m) -> m.getId() - n.getId();
+		return StreamUtils.sortedIntersection(cmp,
 						Stream.of(1).
-								flatMap(__ -> api.getMovieRecommendations(movieId1).stream()),
+								flatMap(__ -> api.getMovieRecommendations(movieId1).stream().sorted(cmp)),
 						Stream.of(1).
-								flatMap(__ -> api.getMovieRecommendations(movieId2).stream()))
+								flatMap(__ -> api.getMovieRecommendations(movieId2).stream().sorted(cmp)))
 				.map(this::dtoToMovie);
 	}
 
