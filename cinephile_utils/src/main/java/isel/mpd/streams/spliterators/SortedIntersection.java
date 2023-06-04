@@ -29,6 +29,7 @@ public class SortedIntersection<T> extends Spliterators.AbstractSpliterator<T>  
             while (cmp.compare(next1, next2) > 0 && split2.tryAdvance(n -> next2 = n));
             if (cmp.compare(next1, next2) == 0) action.accept(next1);
         }
+
         return false;
     }
 }

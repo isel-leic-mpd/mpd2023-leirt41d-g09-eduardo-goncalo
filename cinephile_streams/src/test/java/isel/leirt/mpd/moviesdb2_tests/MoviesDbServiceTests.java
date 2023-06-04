@@ -150,6 +150,7 @@ public class MoviesDbServiceTests {
 
 		int TERMINATOR_ID= 218;
 		int TERMINATOR2_ID = 280;
+		int MATRIX_ID = 603;
 
 		Stream<Movie> moviesStream =
 				serv.getCommonRecommendation(TERMINATOR_ID,TERMINATOR2_ID);
@@ -158,8 +159,23 @@ public class MoviesDbServiceTests {
 
 		var moviesList = moviesStream.collect(toList());
 
-		moviesList.forEach(System.out::println);
 		assertEquals(2, req.getCount());
-		assertEquals(10, moviesList.size());
+		assertEquals(11, moviesList.size());
+
+		Stream<Movie> moviesStream2 =
+				serv.getCommonRecommendation(MATRIX_ID,MATRIX_ID);
+
+		var moviesList2 = moviesStream2.collect(toList());
+
+		assertEquals(4, req.getCount());
+		assertEquals(21, moviesList2.size());
+
+		Stream<Movie> moviesStream3 =
+				serv.getCommonRecommendation(TERMINATOR_ID,MATRIX_ID);
+
+		var moviesList3 = moviesStream3.collect(toList());
+
+		assertEquals(6, req.getCount());
+		assertEquals(3, moviesList3.size());
 	}
 }
