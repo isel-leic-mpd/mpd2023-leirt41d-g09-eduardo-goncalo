@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static isel.mpd.requests.MockRequest.saveOn;
 
@@ -148,6 +149,30 @@ public class MoviesDbWebApi {
 			saveOn(path, req.getReader(path));
 		return credits.getCast();
 	}
+
+	public List<CrewMovieDto> personCredits(int personId){//Mockrequest
+		String path = String.format(ACTOR_MOVIES,personId);
+		Reader reader = req.getReader(path);
+
+		GetCrewMoviesDto credits =
+				gson.fromJson(reader, GetCrewMoviesDto.class);
+		if(!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
+		return credits.getcrew();
+	}
+
+//	public Optional<CrewDto> personByName (String Match){
+//		String path = String.format(ACTOR_MOVIES,Match);
+//		String path = ACTOR_MOVIES;
+//		Reader reader = req.getReader(path);
+//		CrewDto genresQuery =
+//				gson.fromJson(reader, GenreListQuery.class);
+//		if (!(req instanceof MockRequest))
+//			saveOn(path, req.getReader(path));
+//		return genresQuery.getGenres();
+//	}
+
+
 
 	public MoviesDbWebApi(Request req) {
 		this.req = req;

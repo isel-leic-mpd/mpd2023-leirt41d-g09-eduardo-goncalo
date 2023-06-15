@@ -2,6 +2,7 @@ package isel.leirt.mpd.moviesdb2_tests;
 
 import isel.mpd.moviesdb2.MoviesDbWebApi;
 import isel.mpd.moviesdb2.dto.ActorDto;
+import isel.mpd.moviesdb2.dto.CrewMovieDto;
 import isel.mpd.moviesdb2.dto.GenreDto;
 import isel.mpd.moviesdb2.dto.MovieDto;
 import isel.mpd.requests.HttpRequest;
@@ -145,6 +146,7 @@ public class MoviesDbWebApiTests  {
 		assertEquals(50, movies.size());
 	}
 
+
 	@Test
 	public void firstPageOfNowPlayingMoviesNoConnectionTest() {
 		MoviesDbWebApi api = new MoviesDbWebApi(new MockRequest());
@@ -187,5 +189,17 @@ public class MoviesDbWebApiTests  {
 		for(var m : movies)
 			System.out.println(m);
 		assertEquals(MoviesDbWebApi.API_PAGE_SIZE, movies.size());
+	}
+
+	@Test
+	public void getChrisNolanMoviesNoConnectionTest() {
+		MoviesDbWebApi api = new MoviesDbWebApi(new HttpRequest());
+
+		int chrisNolanId = 525;
+		List<CrewMovieDto> movies =
+				api.personCredits(chrisNolanId);
+		for(var m : movies)
+			System.out.println(m);
+		//assertEquals(50, movies.size());
 	}
 }

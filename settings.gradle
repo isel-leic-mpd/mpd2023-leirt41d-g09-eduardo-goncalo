@@ -11,4 +11,5 @@ rootProject.name = 'mpd2023_template'
 include('trab1')
 include('cinephile_streams')
 include('cinephile_utils')
+include 'trab2-fase3'
 
