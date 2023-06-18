@@ -89,6 +89,14 @@ public class MoviesDbService {
 	public Stream<MovieInfo> moviesOfPersonOnPeriod(int personId,
 													LocalDate startDate,
 													LocalDate endDate) {
+//	return personCredits(personId)
+//			.takeWhile(m -> (
+//							(m.getReleaseDate().isEqual(startDate) ||
+//									m.getReleaseDate().isAfter(startDate)) &&
+//									m.getReleaseDate().isBefore(endDate)
+//					)
+//			)
+//			.map(this::getMovieInfo);
 		return personCredits(personId)
 				.filter(m -> (
 						(m.getReleaseDate().isEqual(startDate) ||
@@ -97,7 +105,6 @@ public class MoviesDbService {
 						)
 				)
 				.map(this::getMovieInfo);
-
 	}
 
 	public Stream<Actor> workedWithDirector(int directorId) {
