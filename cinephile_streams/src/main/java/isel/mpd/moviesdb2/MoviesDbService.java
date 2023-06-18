@@ -1,13 +1,7 @@
 package isel.mpd.moviesdb2;
 
-import isel.mpd.moviesdb2.dto.ActorDto;
-import isel.mpd.moviesdb2.dto.GenreDto;
-import isel.mpd.moviesdb2.dto.MovieDetailDto;
-import isel.mpd.moviesdb2.dto.MovieDto;
-import isel.mpd.moviesdb2.model.Actor;
-import isel.mpd.moviesdb2.model.Genre;
-import isel.mpd.moviesdb2.model.Movie;
-import isel.mpd.moviesdb2.model.MovieDetail;
+import isel.mpd.moviesdb2.dto.*;
+import isel.mpd.moviesdb2.model.*;
 import isel.mpd.streams.StreamUtils;
 import isel.mpd.streams.spliterators.SortedIntersection;
 
@@ -85,6 +79,12 @@ public class MoviesDbService {
 				.map(this::dtoToMovie);
 	}
 
+	public Stream<CrewMovie> personCredits(int personId) {
+		return Stream.of(1)
+				.flatMap(__ -> api.personCredits(personId).stream())
+				.map(this::dtoToCrewMovie);
+	}
+
 	public MovieDetail getMovieDetail(int movieId) {
 		return dtoToMovieDetail(api.getMovieDetail(movieId));
 	}
@@ -129,6 +129,19 @@ public class MoviesDbService {
 				dto.getName(),
 				dto.getPopularity(),
 				getActorMovies(dto.getId()));
+	}
+
+	private CrewMovie dtoToCrewMovie(CrewMovieDto dto) {
+		return new CrewMovie(
+				dto.getReleaseDate(),
+				dto.getTitle(),
+				dto.getId(),
+				dto.getPopularity(),
+				getMovieActors(dto.getId()),
+				getGenres(dto.getGenreIds()),
+				getMovieRecommendations(dto.getId()),
+				dto.getJob(),
+				dto.getDepartment());
 	}
 
 	public MoviesDbService(MoviesDbWebApi api) {

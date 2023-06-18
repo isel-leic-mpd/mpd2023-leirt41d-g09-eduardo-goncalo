@@ -3,6 +3,7 @@ package isel.leirt.mpd.moviesdb2_tests;
 import isel.mpd.moviesdb2.MoviesDbService;
 import isel.mpd.moviesdb2.MoviesDbWebApi;
 import isel.mpd.moviesdb2.dto.MovieDto;
+import isel.mpd.moviesdb2.model.CrewMovie;
 import isel.mpd.moviesdb2.model.Genre;
 import isel.mpd.moviesdb2.model.Movie;
 import isel.mpd.moviesdb2.model.MovieDetail;
@@ -177,5 +178,20 @@ public class MoviesDbServiceTests {
 
 		assertEquals(6, req.getCount());
 		assertEquals(3, moviesList3.size());
+	}
+
+	@Test
+	public void getPersonCreditsTest() {
+		CounterRequest req = new CounterRequest(new HttpRequest());
+		MoviesDbService serv =
+				new MoviesDbService(new MoviesDbWebApi(req));
+
+		Stream<CrewMovie> movieStream =
+				serv.personCredits(10788);
+
+		var movieList = movieStream.collect(toList());
+
+		movieList.forEach(System.out::println);
+		assertEquals(26, movieList.size());
 	}
 }

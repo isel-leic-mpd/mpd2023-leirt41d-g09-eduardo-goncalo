@@ -1,15 +1,13 @@
 package isel.leirt.mpd.moviesdb2_tests;
 
 import isel.mpd.moviesdb2.MoviesDbWebApi;
-import isel.mpd.moviesdb2.dto.ActorDto;
-import isel.mpd.moviesdb2.dto.CrewMovieDto;
-import isel.mpd.moviesdb2.dto.GenreDto;
-import isel.mpd.moviesdb2.dto.MovieDto;
+import isel.mpd.moviesdb2.dto.*;
 import isel.mpd.requests.HttpRequest;
 import isel.mpd.requests.MockRequest;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -100,6 +98,17 @@ public class MoviesDbWebApiTests  {
 		for(var m : movies)
 			System.out.println(m);
 		assertEquals(MoviesDbWebApi.API_PAGE_SIZE, movies.size());
+	}
+
+	@Test
+	public void getPersonByNameTest() {
+		MoviesDbWebApi api = new MoviesDbWebApi(new HttpRequest());
+
+		Optional<CrewDto> person = api.personByName("Steven%20Lawrence");
+
+		System.out.println(person);
+
+		assertEquals(person.get().getId(), 10788);
 	}
 
 	@Test

@@ -47,6 +47,9 @@ public class MoviesDbWebApi {
 	private static final String ACTOR_MOVIES =
 		MOVIES_DB_ENDPOINT + "person/%d/movie_credits?api_key=" + API_KEY;
 
+	private static final String CREW_INFO =
+			MOVIES_DB_ENDPOINT + "search/person?query=%s&api_key=" + API_KEY;
+
 	protected final Gson gson;
 	private final Request req;
 
@@ -150,7 +153,7 @@ public class MoviesDbWebApi {
 		return credits.getCast();
 	}
 
-	public List<CrewMovieDto> personCredits(int personId){//Mockrequest
+	public List<CrewMovieDto> personCredits(int personId) {//Mockrequest
 		String path = String.format(ACTOR_MOVIES,personId);
 		Reader reader = req.getReader(path);
 
@@ -161,18 +164,15 @@ public class MoviesDbWebApi {
 		return credits.getcrew();
 	}
 
-//	public Optional<CrewDto> personByName (String Match){
-//		String path = String.format(ACTOR_MOVIES,Match);
-//		String path = ACTOR_MOVIES;
-//		Reader reader = req.getReader(path);
-//		CrewDto genresQuery =
-//				gson.fromJson(reader, GenreListQuery.class);
-//		if (!(req instanceof MockRequest))
-//			saveOn(path, req.getReader(path));
-//		return genresQuery.getGenres();
-//	}
-
-
+	public Optional<CrewDto> personByName (String match) {
+		String path = String.format(CREW_INFO, match);
+		Reader reader = req.getReader(path);
+		CrewDto person =
+				gson.fromJson(reader, CrewDto.class);
+		if (!(req instanceof MockRequest))
+			saveOn(path, req.getReader(path));
+		return Optional.of(person);
+	}
 
 	public MoviesDbWebApi(Request req) {
 		this.req = req;
