@@ -11,6 +11,7 @@ import isel.mpd.requests.CounterRequest;
 import isel.mpd.requests.HttpRequest;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -193,5 +194,22 @@ public class MoviesDbServiceTests {
 
 		movieList.forEach(System.out::println);
 		assertEquals(26, movieList.size());
+	}
+
+	@Test
+	public void getAllChristopherNolanMoviesFrom2000To2010() {
+		CounterRequest req = new CounterRequest(new HttpRequest());
+		MoviesDbService serv = new MoviesDbService(new MoviesDbWebApi(req));
+		var startDate = LocalDate.of(2000, 12, 31);
+		var endDate = LocalDate.of(2010, 1, 1);
+		var chrisNolanId = 525;
+		var moviesInfo =
+				serv.moviesOfPersonOnPeriod(chrisNolanId, startDate, endDate)
+						.filter( m -> m.getJob().equals("Director"));
+		assertEquals(0, req.getCount());
+		int[] nMovies = {0};
+		moviesInfo.forEach( m -> { System.out.println(m); nMovies[0]++; });
+		assertEquals(6, nMovies[0]);
+		assertEquals(13, req.getCount());
 	}
 }

@@ -5,6 +5,7 @@ import isel.mpd.moviesdb2.model.*;
 import isel.mpd.streams.StreamUtils;
 import isel.mpd.streams.spliterators.SortedIntersection;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -85,8 +86,31 @@ public class MoviesDbService {
 				.map(this::dtoToCrewMovie);
 	}
 
+	public Stream<MovieInfo> moviesOfPersonOnPeriod(int personId,
+													LocalDate startDate,
+													LocalDate endDate) {
+		return personCredits(personId)
+				.filter(m -> (
+						(m.getReleaseDate().isEqual(startDate) ||
+						 m.getReleaseDate().isAfter(startDate)) &&
+						 m.getReleaseDate().isBefore(endDate)
+						)
+				)
+				.map(this::getMovieInfo);
+
+	}
+
+	public Stream<Actor> workedWithDirector(int directorId) {
+		return personCredits(directorId)
+				.flatMap(Movie::getActors);
+	}
+
 	public MovieDetail getMovieDetail(int movieId) {
 		return dtoToMovieDetail(api.getMovieDetail(movieId));
+	}
+
+	public MovieInfo getMovieInfo(CrewMovie crewMovie) {
+		return new MovieInfo(crewMovie);
 	}
 
 	private Movie dtoToMovie(MovieDto dto) {

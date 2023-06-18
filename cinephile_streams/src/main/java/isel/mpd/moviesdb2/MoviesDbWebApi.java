@@ -2,6 +2,9 @@ package isel.mpd.moviesdb2;
 
 import com.google.gson.Gson;
 import isel.mpd.moviesdb2.dto.*;
+import isel.mpd.moviesdb2.model.CrewMovie;
+import isel.mpd.moviesdb2.model.Movie;
+import isel.mpd.moviesdb2.model.MovieInfo;
 import isel.mpd.requests.MockRequest;
 import isel.mpd.requests.Request;
 
@@ -164,7 +167,7 @@ public class MoviesDbWebApi {
 		return credits.getcrew();
 	}
 
-	public Optional<CrewDto> personByName (String match) {
+	public Optional<CrewDto> personByName(String match) {
 		String path = String.format(CREW_INFO, match);
 		Reader reader = req.getReader(path);
 		CrewDto person =
