@@ -13,7 +13,6 @@ public class SequenceTests {
     public void ofTest() {
         var res = Sequence.of(1, 2, 3).toList();
         var expected = List.of(1, 2, 3);
-
         assertEquals(res, expected);
     }
 

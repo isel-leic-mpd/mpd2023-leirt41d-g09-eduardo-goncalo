@@ -1,5 +1,7 @@
 package more_streams;
 
+import sequences.Sequence;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -53,5 +55,14 @@ public class StreamUtils {
                 .flatMap(List::stream)
                 .distinct()
                 .toList();
+    }
+
+    static <T> Sequence<T> SequencefromStream(Stream<T> stream) {
+        var split = stream.spliterator();
+        return split::tryAdvance;
+    }
+
+    static <T> Iterable<T> IterablefromStream(Stream<T> stream) {
+        return stream::iterator;
     }
 }
